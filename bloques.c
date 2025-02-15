@@ -25,7 +25,13 @@ int bumount(int fd) {
     return 0;
 }
 
-int main(){
-    printf("hola mundo soy un file sistem");
+int bwrite(unsigned int nbloque, const void *buf) {
+    return 0;
+}
+
+int main(int argc, char *argv[]){
+    printf("Abriendo el fichero\n");
+    bmount(argv[1]);
+    printf("Cerrando el fichero %s\n", argv[1]);
     return 0;
 }
