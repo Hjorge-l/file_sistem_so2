@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <fcntl.h>
+#include <unistd.h>
 
 #define BLOCKSIZE 512
 #define FALSE 0
@@ -14,6 +15,14 @@ int bmount(const char *camino) {
         return ERROR;
     }
     return fd;
+}
+
+int bumount(int fd) {
+    if (close(fd) == ERROR) {
+        perror("bumount");
+        return ERROR;
+    }
+    return 0;
 }
 
 int main(){
