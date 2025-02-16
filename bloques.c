@@ -1,4 +1,4 @@
-#include "bloque.h"
+#include "bloques.h"
 
 static int descriptor = 0;
 
@@ -24,16 +24,26 @@ int bumount() {
     return 0;
 }
 
-int bwrite(unsigned int nBloque, const void *buf) {
-    int offset = nBloque * BLOCKSIZE;
-    
+int offsetIntoVirtualDevice(int offset){
     if (lseek(descriptor, offset, SEEK_SET) == ERROR) {
         perror(RED "Error, lseek");
         printf(RESET);
         bumount();
         return ERROR;
     }
+    return SUCCESS;
+}
 
+int calculateOffset(int nBloque) {
+    return nBloque * BLOCKSIZE;
+}
+
+int bwrite(unsigned int nBloque, const void *buf) {
+    int offset = calculateOffset(nBloque);
+
+    if (offsetIntoVirtualDevice(offset) != ERROR) {
+        return ERROR;
+    }
     if (write(descriptor, buf, BLOCKSIZE) == ERROR) {
         perror(RED "Error, write");
         printf(RESET);
@@ -43,4 +53,17 @@ int bwrite(unsigned int nBloque, const void *buf) {
     return BLOCKSIZE;
 }
 
+int bread(unsigned int nbloque, void *buf) {
+    int offset = calculateOffset(nBloque);
 
+    if (offsetIntoVirtualDevice(offset) != ERROR) {
+        return ERROR;
+    }
+    if (read(descriptor, buf, BLOCKSIZE) == ERROR) {
+        perror(RED "Error, read");
+        printf(RESET);
+        return ERROR;
+    }
+
+    return BLOCKSIZE;
+}

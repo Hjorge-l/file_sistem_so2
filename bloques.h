@@ -23,7 +23,7 @@
 
 #define NEGRITA     "\x1b[1m"
 
-#define BLOCKSIZE 512
+#define BLOCKSIZE 1024
 
 #define SUCCESS 0
 #define ERROR -1
