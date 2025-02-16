@@ -1,37 +1,28 @@
-#include <stdio.h>
-#include <fcntl.h>
-#include <unistd.h>
+#include "bloque.h"
 
-#define BLOCKSIZE 512
-#define FALSE 0
-#define TRUE 1
-#define ERROR -1
+static int descriptor = 0;
 
 int bmount(const char *camino) {
-    int fd = open(camino, O_RDWR, 0666);
+    //Open virtual device
+    int descriptor = open(camino, O_RDWR, 0666);
     
-    if (fd == ERROR) {
-        perror("bmount");
+    if (descriptor == ERROR) {
+        perror(RED "Error bmount");
+        printf(RESET);
         return ERROR;
     }
-    return fd;
+    return descriptor;
 }
 
-int bumount(int fd) {
-    if (close(fd) == ERROR) {
-        perror("bumount");
+int bumount() {
+    if (close(descriptor) == ERROR) {
+        perror(RED "Error bumount");
+        printf(RESET);
         return ERROR;
     }
     return 0;
 }
 
 int bwrite(unsigned int nbloque, const void *buf) {
-    return 0;
-}
-
-int main(int argc, char *argv[]){
-    printf("Abriendo el fichero\n");
-    bmount(argv[1]);
-    printf("Cerrando el fichero %s\n", argv[1]);
     return 0;
 }
