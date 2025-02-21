@@ -53,7 +53,7 @@ int bwrite(unsigned int nBloque, const void *buf) {
     return BLOCKSIZE;
 }
 
-int bread(unsigned int nbloque, void *buf) {
+int bread(unsigned int nBloque, const void *buf) {
     int offset = calculateOffset(nBloque);
 
     if (offsetIntoVirtualDevice(offset) != ERROR) {

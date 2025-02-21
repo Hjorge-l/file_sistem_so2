@@ -30,5 +30,5 @@
 
 int bmount(const char *camino);
 int bumount();
-int bwrite(unsigned int nbloque, const void *buf);
-int bread(unsigned int nbloque, const void *buf);
+int bwrite(unsigned int nBloque, const void *buf);
+int bread(unsigned int nBloque, const void *buf);
