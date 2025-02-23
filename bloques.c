@@ -4,7 +4,7 @@ static int descriptor = 0;
 
 int bmount(const char *camino) {
     //Open virtual device
-    int descriptor = open(camino, O_RDWR, 0666);
+    descriptor = open(camino, O_RDWR, 0666);
     
     if (descriptor == ERROR) {
         perror(RED "Error bmount");
@@ -41,10 +41,14 @@ int calculateOffset(int nBloque) {
 int bwrite(unsigned int nBloque, const void *buf) {
     int offset = calculateOffset(nBloque);
 
-    if (offsetIntoVirtualDevice(offset) != ERROR) {
+    if (offsetIntoVirtualDevice(offset) == ERROR) {
         return ERROR;
     }
-    if (write(descriptor, buf, BLOCKSIZE) == ERROR) {
+    
+    ssize_t bits_written = write(descriptor, buf, BLOCKSIZE);
+    
+    printf("bits escritos en disco : %zi\n", bits_written );
+    if (bits_written == ERROR) {
         perror(RED "Error, write");
         printf(RESET);
         return ERROR;

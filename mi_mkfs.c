@@ -14,10 +14,22 @@ int main (int argc, char **argv) {
         return ERROR;
     }
 
-    if (memset(buf, 0, BLOCKSIZE)) {
+    if (!memset(buf, 0, BLOCKSIZE)) {
         fprintf(stderr, "Error al reservar memoria con memset");
         return ERROR;
     }
 
+    for (int i = 0; i < nBloques; i++) {
+        printf("%i", i);
+        if (bwrite(i, buf) == ERROR) {
+            fprintf(stderr, "Error al escribir un bloque dentro del dispositivo virtual");
+            return ERROR;
+        }
+    }
+
+    if (bumount() == ERROR) {
+        fprintf(stderr, "Error al desmontar el dispositivo virtual");
+        return ERROR;
+    }
     return SUCCESS;
 }
