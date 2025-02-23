@@ -4,6 +4,7 @@ static int descriptor = 0;
 
 int bmount(const char *path) {
     //Open virtual device into global descriptor
+    umask(0000);
     descriptor = open(path, O_RDWR | O_CREAT, 0666);
     
     if (descriptor == ERROR) {
