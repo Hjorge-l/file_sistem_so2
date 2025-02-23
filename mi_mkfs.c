@@ -20,7 +20,6 @@ int main (int argc, char **argv) {
     }
 
     for (int i = 0; i < nBloques; i++) {
-        printf("%i", i);
         if (bwrite(i, buf) == ERROR) {
             fprintf(stderr, "Error al escribir un bloque dentro del dispositivo virtual");
             return ERROR;

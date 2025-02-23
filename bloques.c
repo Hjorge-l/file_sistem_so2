@@ -2,9 +2,9 @@
 
 static int descriptor = 0;
 
-int bmount(const char *camino) {
-    //Open virtual device
-    descriptor = open(camino, O_RDWR, 0666);
+int bmount(const char *path) {
+    //Open virtual device into global descriptor
+    descriptor = open(path, O_RDWR | O_CREAT, 0666);
     
     if (descriptor == ERROR) {
         perror(RED "Error bmount");
@@ -25,6 +25,7 @@ int bumount() {
 }
 
 int offsetIntoVirtualDevice(int offset){
+    // Move the file pointer to a specific offset into virtual device
     if (lseek(descriptor, offset, SEEK_SET) == ERROR) {
         perror(RED "Error, lseek");
         printf(RESET);
@@ -35,6 +36,7 @@ int offsetIntoVirtualDevice(int offset){
 }
 
 int calculateOffset(int nBloque) {
+    // Calculate the byte offset
     return nBloque * BLOCKSIZE;
 }
 
@@ -44,11 +46,8 @@ int bwrite(unsigned int nBloque, const void *buf) {
     if (offsetIntoVirtualDevice(offset) == ERROR) {
         return ERROR;
     }
-    
-    ssize_t bits_written = write(descriptor, buf, BLOCKSIZE);
-    
-    printf("bits escritos en disco : %zi\n", bits_written );
-    if (bits_written == ERROR) {
+    //Write a block data into the virtual device
+    if (write(descriptor, buf, BLOCKSIZE) == ERROR) {
         perror(RED "Error, write");
         printf(RESET);
         return ERROR;
@@ -60,7 +59,7 @@ int bwrite(unsigned int nBloque, const void *buf) {
 int bread(unsigned int nBloque, void *buf) {
     int offset = calculateOffset(nBloque);
 
-    if (offsetIntoVirtualDevice(offset) != ERROR) {
+    if (offsetIntoVirtualDevice(offset) == ERROR) {
         return ERROR;
     }
     if (read(descriptor, buf, BLOCKSIZE) == ERROR) {

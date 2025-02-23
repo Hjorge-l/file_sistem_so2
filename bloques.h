@@ -28,7 +28,7 @@
 #define SUCCESS 0
 #define ERROR -1
 
-int bmount(const char *camino);
+int bmount(const char *path);
 int bumount();
 int bwrite(unsigned int nBloque, const void *buf);
 int bread(unsigned int nBloque, void *buf);
